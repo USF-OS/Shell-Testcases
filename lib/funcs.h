@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+void test_flush(void);
+
 static int subtests = 0;
 static int subtests_fail = 0;
 static int subtest_assert_fail = 0;
@@ -101,6 +103,8 @@ void test_setup(char *description)
     if (description != NULL) {
         printf("%s\n\n", description);
     }
+
+    test_flush();
 }
 
 void test_flush(void)
