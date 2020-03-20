@@ -102,7 +102,7 @@ run() {
 }
 
 reference_run() {
-    reference_output=$(${@})
+    reference_output=$("${@}")
     return $?
 }
 
