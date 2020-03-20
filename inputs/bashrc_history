@@ -1,0 +1,2 @@
+set -o histexpand
+set -o history
