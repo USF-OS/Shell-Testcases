@@ -1,5 +1,3 @@
-set -o history    # Your shell can ignore this
-set -o histexpand # Your shell can ignore this
 echo Command 000
 echo Command 001
 echo Command 002
@@ -421,8 +419,4 @@ echo Command 417
 echo Command 418
 echo Command 419
 echo -----
-!421
-!324
-!400
-!22
-!999
+history
