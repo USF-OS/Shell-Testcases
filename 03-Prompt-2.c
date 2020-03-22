@@ -39,13 +39,6 @@ init_ui();
 char *prompt = prompt_line1();
 test_flush();
 
-subtest("Command count (should be 0)",
-{
-    printf("Prompt string: %s\n", prompt);
-    char zero[] = "0";
-    test_assert(strstr(prompt, zero) != NULL);
-});
-
 subtest("Username present in prompt",
 {
     printf("Prompt string: %s\n", prompt);
