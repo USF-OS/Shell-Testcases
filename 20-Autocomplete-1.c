@@ -33,6 +33,36 @@ subtest("Nothing in PATH",
     test_assert(match == NULL);
 });
 
+subtest("Nothing in PATH, blank input string",
+{
+    setenv("PATH", "", 1);
+    const char *str = "";
+
+    int match_count = 0;
+    char *match;
+    char *matches[MAX_MATCHES] = { NULL };
+    while ((match = command_generator(str, match_count)) != NULL) {
+        matches[match_count++] = match;
+    }
+
+    test_assert(match_count == 4);
+
+    /* Sort the list of matches */
+    qsort(matches, match_count, sizeof(const char *), comparator);
+
+    char *expected_matches[] = {
+        "exit",
+        "jobs",
+        "history",
+        "cd",
+    };
+    qsort(expected_matches, match_count, sizeof(const char *), comparator);
+
+    for (int i = 0; i < match_count; ++i) {
+        printf("\n> matches[%d] = '%s'\n", i, matches[i]);
+        test_assert_str(matches[i], "==", expected_matches[i], 50);
+    }
+});
 
 subtest("Single directory in PATH, 'v' entered",
 {
@@ -162,6 +192,58 @@ subtest("Invalid directories in PATH, 'hello' entered",
         test_assert_str(matches[0], "==", "hellooooooo                     ...world!", 50);
     }
 });
+
+subtest("Multiple directories in PATH, 'hi' entered",
+{
+    char *test_dir = getenv("TEST_DIR");
+    char *input_dir = "/inputs/fakepath/";
+
+    /* we'll add an extra char here for the subdirectories in fakepath */
+    char *fake_path1 = malloc(strlen(test_dir) + strlen(input_dir) + 2);
+    strcpy(fake_path1, test_dir);
+    strcat(fake_path1, input_dir);
+    strcat(fake_path1, "c");
+
+    size_t len = strlen(fake_path1);
+
+    char *fake_path2 = strdup(fake_path1);
+    fake_path2[len - 1] = 'd';
+
+    size_t new_len = strlen(fake_path1)
+            + strlen(fake_path2)
+            + 2;
+
+    char *new_path = malloc(new_len * sizeof(*new_path));
+    snprintf(new_path, new_len, "%s:%s", fake_path1, fake_path2);
+
+    setenv("PATH", new_path, 1);
+    const char *str = "hi";
+
+    int match_count = 0;
+    char *match;
+    char *matches[MAX_MATCHES] = { NULL };
+    while ((match = command_generator(str, match_count)) != NULL) {
+        matches[match_count++] = match;
+    }
+
+    test_assert(match_count == 4);
+
+    /* Sort the list of matches */
+    qsort(matches, match_count, sizeof(const char *), comparator);
+    char *expected_matches[] = {
+        "hi_there_______________:-)",
+        "history",
+        "hidutil",
+        "hiutil",
+    };
+    qsort(expected_matches, match_count, sizeof(const char *), comparator);
+
+    for (int i = 0; i < match_count; ++i) {
+        printf("\n> matches[%d] = '%s'\n", i, matches[i]);
+        test_assert_str(matches[i], "==", expected_matches[i], 50);
+    }
+});
+
 
 subtest("PATH spans many files, 'zi' entered",
 {
