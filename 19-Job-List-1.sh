@@ -10,7 +10,7 @@ sleep 100 &
 sleep 450 &
 sleep 3
 jobs
-${TEST_DIR}/scripts/kill-parent.sh
+${TEST_DIR}/inputs/scripts/kill-parent.sh
 EOM
 )
 
