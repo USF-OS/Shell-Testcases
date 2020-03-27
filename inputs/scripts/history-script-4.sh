@@ -1,5 +1,8 @@
+set -o history    # Your shell can ignore this
+set -o histexpand # Your shell can ignore this
+echo Command 000
 echo Command 001
-echo Command 002
+uname -a
 echo Command 003
 echo Command 004
 echo Command 005
@@ -369,7 +372,7 @@ echo Command 368
 echo Command 369
 echo Command 370
 echo Command 371
-echo Command 372
+ls -1 -t -r /
 echo Command 373
 echo Command 374
 echo Command 375
@@ -379,7 +382,7 @@ echo Command 378
 echo Command 379
 echo Command 380
 echo Command 381
-echo Command 382
+printf Hello
 echo Command 383
 echo Command 384
 echo Command 385
@@ -390,7 +393,7 @@ echo Command 389
 echo Command 390
 echo Command 391
 echo Command 392
-echo Command 393
+cat /etc/hostname
 echo Command 394
 echo Command 395
 echo Command 396
@@ -403,7 +406,7 @@ echo Command 402
 echo Command 403
 echo Command 404
 echo Command 405
-echo Command 406
+who
 echo Command 407
 echo Command 408
 echo Command 409
@@ -418,11 +421,9 @@ echo Command 417
 echo Command 418
 echo Command 419
 echo -----
-history
-echo -----
-!419
-!324
-!324
-!400
-!22
-!999
+!ls
+!p
+!cat
+!w
+!un
+!e
