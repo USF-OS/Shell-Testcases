@@ -1,5 +1,3 @@
-set -o history    # Your shell can ignore this
-set -o histexpand # Your shell can ignore this
 echo Command 000
 echo Command 001
 uname -a
