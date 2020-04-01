@@ -9,7 +9,7 @@ cat /etc/services > ${TEST_DIR}/testfile2
 echo This will overwrite the first message > ${TEST_DIR}/testfile1
 cat ${TEST_DIR}/testfile1 ${TEST_DIR}/testfile2 > ${TEST_DIR}/final_output.txt
 cat ${TEST_DIR}/final_output.txt
-${TEST_DIR}/scripts/get-stats.sh ${TEST_DIR}/final_output.txt
+${TEST_DIR}/inputs/scripts/get-stats.sh ${TEST_DIR}/final_output.txt
 rm -f ${TEST_DIR}/final_output.txt
 rm -f ${TEST_DIR}/testfile1 ${TEST_DIR}/testfile2
 EOM
