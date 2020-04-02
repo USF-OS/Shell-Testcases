@@ -1,5 +1,7 @@
 source "${TEST_DIR}/lib/funcs.bash"
 
+run_timeout=5
+
 trap '# Interrupt' INT
 
 script=$(cat <<EOM
