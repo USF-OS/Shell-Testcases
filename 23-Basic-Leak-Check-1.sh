@@ -1,5 +1,18 @@
 source "${TEST_DIR}/lib/funcs.bash"
 
+run_timeout=3
+
+fd_check='
+{
+    if (/==[0-9]*==\s*Open file descriptor/) {
+        fd=$0;
+        getline;
+        if (! /inherited/) {
+            print fd
+        }
+    }
+}' 
+
 script=$(cat <<EOM
 ls /
 cd
@@ -16,22 +29,23 @@ test_start "Basic Memory Leak Check"
 echo "${script}"
 # -------------- End --------------
 
-valgrind_output=$(valgrind \
+program_output=$(timeout ${run_timeout} valgrind \
     --trace-children=no \
     --child-silent-after-fork=yes \
     --leak-check=full \
+    --track-fds=yes \
+    --track-origins=yes \
     ./$SHELL_NAME < <(echo "${script}") 2>&1)
 
-grep 'are definitely lost' <<< "${valgrind_output}"
+echo "${program_output}"
 
-if [[ $? -eq 0 ]]; then
-    echo "Leaks detected! Showing valgrind output."
+# Check for open FDs
+awk "${fd_check}" <<< "${program_output}" \
+    | grep -i '==[0-9]*==.*file descriptor' && test_end 1
 
-    echo "${valgrind_output}"
+# Make sure there were no blocks definitely lost
+grep -i --after-context=1 '==[0-9]*==\s*definitely lost' \
+    <<< "${program_output}" && test_end 1
 
-    test_end 1
-else
-    test_end 0
-fi
-
-test_end
+# If none of the conditions were triggered above, the test passes.
+test_end 0 
