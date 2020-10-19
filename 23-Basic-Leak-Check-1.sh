@@ -43,9 +43,9 @@ echo "${program_output}"
 awk "${fd_check}" <<< "${program_output}" \
     | grep -i '==[0-9]*==.*file descriptor' && test_end 1
 
-# Make sure there were no blocks definitely lost
-grep -i --after-context=1 '==[0-9]*==\s*definitely lost' \
-    <<< "${program_output}" && test_end 1
+# Make sure no leaks are possible
+grep -i '==[0-9]*==.*no leaks are possible' \
+    <<< "${program_output}" || test_end 1
 
 # If none of the conditions were triggered above, the test passes.
 test_end 0 
